@@ -8,58 +8,94 @@ use Illuminate\Http\Request;
 class ProjectController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Lister tous les projets.
      */
     public function index()
     {
-        //
+        return response()->json(Project::with('entreprise', 'users')->get());
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Afficher un projet spécifique.
      */
-    public function create()
+    public function show($id)
     {
-        //
+        $project = Project::with('entreprise', 'users')->find($id);
+        if (!$project) {
+            return response()->json(['message' => 'Projet non trouvé'], 404);
+        }
+        return response()->json($project);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Créer un nouveau projet.
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|unique:projects,name',
+            'entreprise_id' => 'required|exists:entreprises,id',
+            'user_ids' => 'required|array',
+            'user_ids.*' => 'exists:users,id',
+        ]);
+
+        $project = Project::create([
+            'name' => $validated['name'],
+            'entreprise_id' => $validated['entreprise_id'],
+        ]);
+
+        // Attacher plusieurs utilisateurs au projet
+        $project->users()->attach($validated['user_ids']);
+
+        return response()->json([
+            'message' => 'Projet créé avec succès',
+            'project' => $project->load('users')
+        ], 201);
     }
 
     /**
-     * Display the specified resource.
+     * Mettre à jour un projet existant.
      */
-    public function show(Project $project)
+    public function update(Request $request, $id)
     {
-        //
+        $project = Project::find($id);
+        if (!$project) {
+            return response()->json(['message' => 'Projet non trouvé'], 404);
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|unique:projects,name,' . $id,
+            'entreprise_id' => 'required|exists:entreprises,id',
+            'users' => 'array',
+            'users.*' => 'exists:users,id',
+        ]);
+
+        $project->update([
+            'name' => $validated['name'],
+            'entreprise_id' => $validated['entreprise_id'],
+        ]);
+
+        if (isset($validated['users'])) {
+            $project->users()->sync($validated['users']);
+        }
+
+        return response()->json([
+            'message' => 'Projet mis à jour avec succès',
+            'project' => $project->load('entreprise', 'users'),
+        ]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Supprimer un projet.
      */
-    public function edit(Project $project)
+    public function destroy($id)
     {
-        //
-    }
+        $project = Project::find($id);
+        if (!$project) {
+            return response()->json(['message' => 'Projet non trouvé'], 404);
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Project $project)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Project $project)
-    {
-        //
+        $project->delete();
+        return response()->json(['message' => 'Projet supprimé avec succès']);
     }
 }

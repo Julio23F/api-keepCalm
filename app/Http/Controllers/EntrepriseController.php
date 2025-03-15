@@ -7,59 +7,48 @@ use Illuminate\Http\Request;
 
 class EntrepriseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return response()->json(Entreprise::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|unique:entreprises,name',
+        ]);
+
+        $entreprise = Entreprise::create($validated);
+
+        return response()->json([
+            'message' => 'Entreprise créée avec succès',
+            'entreprise' => $entreprise
+        ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Entreprise $entreprise)
+    public function show($id)
     {
-        //
+        return response()->json(Entreprise::findOrFail($id));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Entreprise $entreprise)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Entreprise $entreprise)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'sometimes|string|unique:entreprises,name,' . $entreprise->id,
+        ]);
+
+        $entreprise->update($validated);
+
+        return response()->json([
+            'message' => 'Entreprise mise à jour avec succès',
+            'entreprise' => $entreprise
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Entreprise $entreprise)
     {
-        //
+        $entreprise->delete();
+
+        return response()->json(['message' => 'Entreprise supprimée avec succès']);
     }
 }

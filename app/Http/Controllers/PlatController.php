@@ -8,58 +8,64 @@ use Illuminate\Http\Request;
 class PlatController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Créer un nouveau plat.
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:plats,name',
+            'description' => 'nullable|string',
+            'type' => 'required|string|max:100',
+            'entreprise_id' => 'required|exists:entreprises,id',
+        ]);
+
+        $plat = Plat::create($validated);
+
+        return response()->json([
+            'message' => 'Plat créé avec succès',
+            'plat' => $plat
+        ], 201);
     }
 
     /**
-     * Display the specified resource.
+     * Mettre à jour un plat existant.
      */
-    public function show(Plat $plat)
+    public function update(Request $request, $id)
     {
-        //
+        $plat = Plat::find($id);
+
+        if (!$plat) {
+            return response()->json(['message' => 'Plat non trouvé'], 404);
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:plats,name,' . $id,
+            'description' => 'nullable|string',
+            'type' => 'required|string|max:100',
+            'entreprise_id' => 'required|exists:entreprises,id',
+        ]);
+
+        $plat->update($validated);
+
+        return response()->json([
+            'message' => 'Plat mis à jour avec succès',
+            'plat' => $plat
+        ]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Supprimer un plat.
      */
-    public function edit(Plat $plat)
+    public function destroy($id)
     {
-        //
-    }
+        $plat = Plat::find($id);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Plat $plat)
-    {
-        //
-    }
+        if (!$plat) {
+            return response()->json(['message' => 'Plat non trouvé'], 404);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Plat $plat)
-    {
-        //
+        $plat->delete();
+
+        return response()->json(['message' => 'Plat supprimé avec succès']);
     }
 }
