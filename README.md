@@ -5,4 +5,4 @@
 `2) php artisan migrate`<br/>
 
 ###### Lancer l'application : 
-`php artisan serve`<br/>
+`php artisan serve`<br/> 

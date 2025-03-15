@@ -52,7 +52,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Entreprise::class);
     }
-
+ 
     /**
      * Get the contrat user associated with the user.
      */
