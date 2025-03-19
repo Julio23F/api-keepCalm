@@ -45,7 +45,7 @@ class AuthController extends Controller
             'email' => 'nullable|email|max:255',
         ]);
 
-        $email = $request->filled('email') ? $request->email : "keepCalm@gmail.com";
+        $email = $request->filled('email') ? $request->email : "keepCalm" . bcrypt(Str::random(10)) . "@gmail2.com";
 
         $user = User::create([
             'name' => $request->first_name . ' ' . $request->last_name, 
