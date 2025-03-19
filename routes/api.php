@@ -27,6 +27,8 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
 
+    Route::post('/member', [AuthController::class, 'member']);
+
     // Routes pour la gestion des entreprises
     // Route::post('/entreprises', [EntrepriseController::class, 'store']); // Création
     // Route::put('/entreprises/{id}', [EntrepriseController::class, 'update']); // Mise à jour

@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Foyer;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -22,6 +23,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'type' => "ADMIN",
             'password' => Hash::make($request->password),
         ]);
 
@@ -30,6 +32,32 @@ class AuthController extends Controller
             'token' => $user->createToken('auth_token')->plainTextToken,
         ], 201);
     }
+
+
+
+    public function member(Request $request) {
+        $validatedData = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'sex' => 'required|string|max:255',
+            'birth_date' => 'required|integer|min:16|max:60',
+            'status' => 'required|string|max:255',
+            'email' => 'nullable|email|max:255',
+        ]);
+
+        $email = $request->filled('email') ? $request->email : "keepCalm@gmail.com";
+
+        $user = User::create([
+            'name' => $request->first_name . ' ' . $request->last_name, 
+            'email' => $email,
+            'password' => bcrypt(Str::random(10)),
+        ]);
+
+        return response()->json([
+            'user' => $user,
+        ], 201);
+    }
+
 
     // Login
     public function login(Request $request) {

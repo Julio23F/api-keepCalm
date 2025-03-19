@@ -12,19 +12,39 @@ class EntrepriseController extends Controller
         return response()->json(Entreprise::all());
     }
 
+    // public function store(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'name' => 'required|string',
+    //         'nombreEmployes' => 'required|string',
+    //     ]);
+
+    //     $entreprise = Entreprise::create($validated);
+
+    //     return response()->json([
+    //         'message' => 'Entreprise créée avec succès',
+    //         'entreprise' => $entreprise
+    //     ], 201);
+    // }
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|unique:entreprises,name',
+            'name' => 'required|string',
+            'nombreEmployes' => 'required|string',
         ]);
 
         $entreprise = Entreprise::create($validated);
+
+        $user = auth()->user();
+        $user->entreprise_id = $entreprise->id;
+        $user->save();
 
         return response()->json([
             'message' => 'Entreprise créée avec succès',
             'entreprise' => $entreprise
         ], 201);
     }
+
 
     public function show($id)
     {
@@ -34,7 +54,7 @@ class EntrepriseController extends Controller
     public function update(Request $request, Entreprise $entreprise)
     {
         $validated = $request->validate([
-            'name' => 'sometimes|string|unique:entreprises,name,' . $entreprise->id,
+            'name' => 'sometimes|string,' . $entreprise->id,
         ]);
 
         $entreprise->update($validated);
