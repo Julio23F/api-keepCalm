@@ -132,8 +132,6 @@
 
 ---
 
----
-
 ## 🔹 Members
 
 ### 3️⃣ Création d'un employé (`POST /api/members`)
@@ -201,20 +199,20 @@
 ```json
 {
     "message": "Membre mise à jour avec succès",
-    "entreprise": {
+    "user": {
         "id": 1,
         "name": "Member Updated"
     }
 }
 ```
 
-### 6️⃣ Supprimer une entreprise (`DELETE /api/entreprises/{id}`)
+### 6️⃣ Supprimer une entreprise (`DELETE /api/members/{id}`)
 
 #### ⬅️ **Réponse (JSON)**
 
 ```json
 {
-    "message": "Entreprise supprimée avec succès"
+    "message": "Membre supprimée avec succès"
 }
 ```
 
