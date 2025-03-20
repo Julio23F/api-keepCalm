@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Entreprise;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Database\QueryException;
+use Exception;
+
 class EntrepriseController extends Controller
 {
     public function index()
@@ -51,18 +56,25 @@ class EntrepriseController extends Controller
         return response()->json(Entreprise::findOrFail($id));
     }
 
-    public function update(Request $request, Entreprise $entreprise)
-    {
-        $validated = $request->validate([
-            'name' => 'sometimes|string,' . $entreprise->id,
-        ]);
+    public function update(Request $request, Entreprise $entreprise) {
+        try {
+            $validated = $request->validate([
+                'name' => 'sometimes|string,' . $entreprise->id,
+            ]);
 
-        $entreprise->update($validated);
+            $entreprise->update($validated);
 
-        return response()->json([
-            'message' => 'Entreprise mise à jour avec succès',
-            'entreprise' => $entreprise
-        ]);
+            return response()->json([
+                'message' => 'Entreprise mise à jour avec succès',
+                'entreprise' => $entreprise
+            ]);
+        } catch (Exception $e) {
+            Log::error('Erreur inconnue: ' . $e->getMessage());
+            return response()->json([
+                'error' => 'Erreur interne du serveur',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function destroy(Entreprise $entreprise)

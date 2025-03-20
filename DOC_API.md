@@ -87,7 +87,10 @@
 [
     {
         "id": 1,
-        "name": "Entreprise"
+        "name": "Entreprise",
+        "nombreEmployes": "5_10",
+        "created_at": "2025-03-15T14:45:53.000000Z",
+        "updated_at": "2025-03-15T14:45:53.000000Z"
     }
 ]
 ```
@@ -109,7 +112,98 @@
     "message": "Entreprise mise à jour avec succès",
     "entreprise": {
         "id": 1,
-        "name": "Entreprise Updated"
+        "name": "Entreprise Updated",
+        "nombreEmployes": "",
+        "created_at": "2025-03-15T14:45:53.000000Z",
+        "updated_at": "2025-03-15T14:45:53.000000Z"
+    }
+}
+```
+
+### 6️⃣ Supprimer une entreprise (`DELETE /api/entreprises/{id}`)
+
+#### ⬅️ **Réponse (JSON)**
+
+```json
+{
+    "message": "Entreprise supprimée avec succès"
+}
+```
+
+---
+
+---
+
+## 🔹 Members
+
+### 3️⃣ Création d'un employé (`POST /api/members`)
+
+#### ➡️ **Requête (JSON)**
+
+```json
+{
+    "first_name": "John",
+    "last_name": "Doe",
+    "sex": "male",
+    "birth_date": ">= 16",
+    "status": "CDI"
+}
+```
+
+#### ⬅️ **Réponse (JSON)**
+
+```json
+{
+    "message": "Utilisateur créé avec succès",
+    "user": {
+        "name": "John Doe",
+        "email": "keepcalmAk8Po@gmail.com",
+        "entreprise_id": 9,
+        "updated_at": "2025-03-20T04:36:01.000000Z",
+        "created_at": "2025-03-20T04:36:01.000000Z",
+        "id": 1
+    },
+}
+```
+
+### 4️⃣ Liste des employés (`GET /api/members`)
+
+#### ⬅️ **Réponse (JSON)**
+
+```json
+[
+    {
+        "id": 1,
+        "name": "John Doe",
+        "email": "johndoe@example.com",
+        "type": "USER",
+        "email_verified_at": null,
+        "entreprise_id": 1,
+        "contrat_user_id": null,
+        "created_at": "2025-03-15T14:45:53.000000Z",
+        "updated_at": "2025-03-15T14:45:53.000000Z"
+    },
+]
+```
+
+### 5️⃣ Modifier une entreprise (`PUT /api/members/{id}`)
+
+#### ➡️ **Requête (JSON)**
+
+```json
+{
+    "name": "Member Updated"
+}
+```
+
+#### ⬅️ **Réponse (JSON)**
+
+```json
+{
+    "message": "Membre mise à jour avec succès",
+    "entreprise": {
+        "id": 1,
+        "name": "Member Updated"
     }
 }
 ```

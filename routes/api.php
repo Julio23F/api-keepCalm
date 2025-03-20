@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\EntrepriseController;
 use App\Http\Controllers\PlatController;
 use App\Http\Controllers\ProjectController;
@@ -27,7 +28,11 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
 
-    Route::post('/member', [AuthController::class, 'member']);
+    Route::post('/members', [MemberController::class, 'store']);
+    Route::get('/members', [MemberController::class, 'index']); 
+    Route::get('/members/{id}', [MemberController::class, 'show']);
+    Route::put('/members/{member}', [MemberController::class, 'update']);
+    Route::delete('/members/{member}', [MemberController::class, 'destroy']);
 
     // Routes pour la gestion des entreprises
     // Route::post('/entreprises', [EntrepriseController::class, 'store']); // Création
