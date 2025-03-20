@@ -134,7 +134,7 @@
 
 ## 🔹 Members
 
-### 3️⃣ Création d'un employé (`POST /api/members`)
+### 7️⃣ Création d'un employé (`POST /api/members`)
 
 #### ➡️ **Requête (JSON)**
 
@@ -164,7 +164,7 @@
 }
 ```
 
-### 4️⃣ Liste des employés (`GET /api/members`)
+### 8️⃣ Liste des employés (`GET /api/members`)
 
 #### ⬅️ **Réponse (JSON)**
 
@@ -184,7 +184,7 @@
 ]
 ```
 
-### 5️⃣ Modifier une entreprise (`PUT /api/members/{id}`)
+### 9️⃣ Modifier une entreprise (`PUT /api/members/{id}`)
 
 #### ➡️ **Requête (JSON)**
 
@@ -206,7 +206,7 @@
 }
 ```
 
-### 6️⃣ Supprimer une entreprise (`DELETE /api/members/{id}`)
+### 🔟 Supprimer une entreprise (`DELETE /api/members/{id}`)
 
 #### ⬅️ **Réponse (JSON)**
 
@@ -220,7 +220,7 @@
 
 ## 🔹 Projets
 
-### 7️⃣ Création d'un projet (`POST /api/projects`)
+### 1️⃣1️⃣  Création d'un projet (`POST /api/projects`)
 
 #### ➡️ **Requête (JSON)**
 
@@ -249,7 +249,7 @@
 
 ## 🔹 Plats
 
-### 8️⃣ Création d'un plat (`POST /api/plats`)
+### 1️⃣2️⃣  Création d'un plat (`POST /api/plats`)
 
 #### ➡️ **Requête (JSON)**
 
